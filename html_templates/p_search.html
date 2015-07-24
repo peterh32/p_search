@@ -1,0 +1,33 @@
+<div class="_p_select" ng-class="{'multiple': multiple, 'single': !multiple, 'busy': busy}">
+    <div class="input_box" ng-class="{'active': active}" ng-click="activateAndFocus($event)">
+        <span class="placeholder" ng-hide="active && multiple || picks.length">{{ placeholder }}</span>
+
+        <!-- the selected picks, if any -->
+        <span class="pick" ng-repeat="pick in picks" ng-class="{highlight: highlight==$index}">
+            {{ pick[displayField] }}
+            <a ng-click="unPick($index)" class="kill_pick">&times;</a>
+        </span>
+
+        <!-- the selector input -->
+        <input type="text" class="query" ng-model="query"
+               ng-keyup="handleKeyup($event)"
+               ng-keypress="handleKeypress($event)"
+               ng-blur="handleBlur()"/>
+        <div class="spinny">Put your favorite ajax-busy-spinner here</div>
+    </div>
+
+    <!-- the dropdown displaying your matches -->
+    <ul class="results" ng-show="showResults && choices.length">
+        <li ng-repeat="profile in choices" ng-class="{selected: selected==$index}"
+            ng-mouseover="scrollTo($index)" ng-click="pickMe()">
+            {{ profile[displayField] }}
+        </li>
+    </ul>
+
+    <!-- the hidden input where the selections are stored for the model -->
+    <input type="hidden"  ng-value="selections"/>
+    <!-- hidden select widget where values are stored for conventional form submits -->
+    <select name="{{ pname }}" multiple style="display:none;">
+        <option ng-repeat="pick in picks" selected>{{ pick[valueField] }}</option>
+    </select>
+</div>

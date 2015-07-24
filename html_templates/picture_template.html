@@ -1,0 +1,35 @@
+<div class="_p_select" ng-class="{'multiple': multiple, 'single': !multiple}">
+    <div class="input_box" ng-class="{'active': active}" ng-click="activateAndFocus($event)">
+        <span class="placeholder" ng-hide="active && multiple || picks.length">{{ placeholder }}</span>
+
+        <!-- the selected picks, if any -->
+        <span class="pick" ng-repeat="pick in picks" ng-class="{highlight: highlight==$index}">
+            {{ pick[displayField] }}
+            <span ng-show="pick.photos[0].url"> (has photo)</span>
+            <span ng-show="!pick.photos[0].url"> (no photo)</span>
+            <a ng-click="unPick($index)" class="kill_pick">&times;</a>
+        </span>
+
+        <!-- the selector input -->
+        <input type="text" class="query" ng-model="query"
+               ng-keyup="handleKeyup($event)"
+               ng-keypress="handleKeypress($event)"
+               ng-blur="handleBlur()"/>
+    </div>
+
+    <!-- the dropdown displaying your matches -->
+    <ul class="results" ng-show="showResults && choices.length">
+        <li style="clear:both" ng-repeat="choice in choices" ng-class="{selected: selected==$index}"
+            ng-mouseover="scrollTo($index)" ng-click="pickMe()">
+            <img height="50" style="float: left; padding-right: 8px;" src="{{ (choice.photos[0].url) || 'img/no_img.png' }}"/>
+            <div style="overflow: hidden; height:50px;" >{{ choice[displayField] }}</div>
+        </li>
+    </ul>
+
+    <!-- the hidden input where the selections are stored for the model -->
+    <input type="hidden"  ng-value="selections"/>
+    <!-- hidden select widget where values are stored for conventional form submits -->
+    <select name="{{ pname }}" multiple style="display:none;">
+        <option ng-repeat="pick in picks" selected>{{ pick[valueField] }}</option>
+    </select>
+</div>

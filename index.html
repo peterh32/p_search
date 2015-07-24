@@ -1,0 +1,256 @@
+<html>
+<head>
+    <title>pSelect Test Page</title>
+    <link rel="stylesheet" href="css/pSearch.css"/>
+    <link rel="stylesheet" href="css/spinny.css"/>
+    <link rel="stylesheet" href="css/demo.css"/>
+</head>
+<body ng-app="testApp">
+
+    <h1>pSelect</h1>
+
+    <p>
+        Fancy dropdown select widget built using angular.js.
+        Supports Ajax search or just use it to pretty up your
+        regular &lt;select&gt; widget.
+    </p>
+
+
+    <div ng-controller="testController as tc" >
+        <h3>PROD</h3>
+        <div p_select
+             multiple
+             name="tvshows"
+             ajax-url="http://metzler.clearcareonline.com/search/profiles"
+             value-field="id"
+             display-field="name_or_company"
+             placeholder="hello"
+             ng-model="tc.people"
+        ></div>
+
+    <div ng-controller="testController as tc" >
+        <h3>LOCAL</h3>
+        <div p_select
+             multiple
+             name="tvshows"
+             ajax-url="http://metzler.local.dev/search/profiles"
+             value-field="id"
+             display-field="name_or_company"
+             placeholder="hello"
+             ng-model="tc.people"
+        ></div>
+
+
+
+    <h2>Ajax Search</h2>
+
+    <div ng-controller="testController as tc" >
+        <p>(Using tvguide.com's search API; hope they don't mind)</p>
+        <h3>Basic Multiple-Choice Ajax Search Widget</h3>
+        <div p_select
+             multiple
+             name="tvshows"
+             ajax-url="http://mapi.tvguide.com/watchlist/search"
+             search-key="keyword"
+             extra-search-params="{'limit':'10', 'v': '1.0'}"
+             value-field="id"
+             display-field="name"
+             placeholder="Find TV Shows or Movies"
+             ng-model="tc.showsAndMovies"
+        ></div>
+
+        <h4>Code</h4>
+<textarea disabled="disabled"><div p_select
+     multiple
+     name="tvshows"
+     ajax-url="http://mapi.tvguide.com/watchlist/search"
+     search-key="keyword"
+     extra-search-params="{'limit':'10', 'v': '1.0'}"
+     value-field="id"
+     display-field="name"
+     placeholder="Find TV Shows or Movies"
+     ng-model="tc.showsAndMovies"
+></div></textarea>
+
+        <h4>Explanation of Attributes</h4>
+        <dl>
+            <dt>multiple</dt>
+            <dd>Makes it a multiple-select widget</dd>
+
+            <dt>name="tvshows"</dt>
+            <dd>Form field name (required)</dd>
+
+            <dt>ajax-url="http://mapi.tvguide.com/watchlist/search"</dt>
+            <dd>URL for the search API</dd>
+
+            <dt>search-key="keyword"</dt>
+            <dd>
+                Indicates query parameter expected by the API. This one expects 'keyword', e.g.
+                <pre>?keyword=modern+family</pre>
+                Defaults to 'q', so if your query looks like q=the+simpsons, you can skip this.
+            </dd>
+
+            <dt>extra-search-params="{'limit':'10', 'v': '1.0'}"</dt>
+            <dd>Additional parameters to pass to the API. Optional</dd>
+
+            <dt>value-field="id"</dt>
+            <dd>
+                The field in the returned data to use as the form value. This API returns items with a structure
+                like
+                <pre>{'name': 'The Simpsons', 'id': '100521', ...}</pre>
+                so we use "id" as the value field (and "name"
+                in the display-field &#151; see below).
+            </dd>
+
+            <dt>display-field="name"</dt>
+            <dd>The field in the returned data to display in the dropdown</dd>
+
+            <dt>placeholder="Find TV Shows or Movies"</dt>
+            <dd>Placeholder text (optional, defaults to "Select")</dd>
+
+            <dt>ng-model="tc.showsAndMovies"</dt>
+            <dd>The model corresponding to the field. Required</dd>
+        </dl>
+    </div>
+
+    
+
+    <div ng-controller="testController as tc" >
+        <h3>Alternate Template</h3>
+        <p>
+            This is probably the most useful thing about the widget.
+            You can completely customize the dropdown and results by
+            editing the HTML template.
+        <p>
+        <p>
+            This version displays images (when available) with each choice.
+        </p>
+        <div p_select
+             multiple
+             name="tvshows2"
+             ajax-url="http://mapi.tvguide.com/watchlist/search"
+             search-key="keyword"
+             extra-search-params="{'limit':'5', 'v': '1.0'}"
+             placeholder="Find TV Shows or Movies"
+             ng-model="tc.showsAndMovies"
+             template-url="html_templates/picture_template.html"
+        ></div>
+        <h4>Additional Attributes</h4>
+        <dl>
+            <dt>template-url="html_templates/picture_template.html"</dt>
+            <dd>
+                Specifies html template for displaying the widget. Default is
+                <a href="html_templates/p_search.html">p_select.html</a>
+            </dd>
+        </dl>
+    </div>
+
+    <div ng-controller="testController as tc" >
+        <h3>Single-Selection Version</h3>
+        <p>Same as the first one, but leave off the <em>multiple</em> attribute<p>
+        <div p_select
+             name="tvshow"
+             ajax-url="http://mapi.tvguide.com/watchlist/search"
+             search-key="keyword"
+             extra-search-params="{'limit':'10', 'v': '1.0'}"
+             value-field="id"
+             display-field="name"
+             placeholder="Find a TV Show or Movie"
+             ng-model="tc.showsAndMovies"
+        ></div>
+    </div>
+
+    <div ng-controller="testController as tc" >
+        <h3>Preselected Options on an Ajax Widget</h3>
+        <div p_select
+             multiple
+             ajax-url="http://mapi.tvguide.com/watchlist/search"
+             search-key="keyword"
+             extra-search-params="{'limit':'5', 'v': '1.0'}"
+             placeholder="Find TV Shows or Movies"
+             ng-model="tc.showsAndMovies"
+        >
+            <select name="moretvshow" multiple>
+                <option value="100521" selected="selected">The Simpsons</option>
+                <option value="100170" selected="selected">Futurama</option>
+            </select>
+        </div>
+        <h4>Code</h4>
+        <p>Same as above, but encloses a &lt;select&gt; tag with preselected options:</p>
+<textarea disabled="disabled"><p_select
+     multiple
+     ajax-url="http://mapi.tvguide.com/watchlist/search"
+     search-key="keyword"
+     extra-search-params="{'limit':'10', 'v': '1.0'}"
+     placeholder="Find TV Shows or Movies"
+     ng-model="tc.showsAndMovies"
+>
+    <select name="moretvshow" multiple>
+        <option value="100521" selected="selected">The Simpsons</option>
+        <option value="100170" selected="selected">Futurama</option>
+    </select>
+</p_select></textarea>
+
+        <p>Also notice that 'name' and 'multiple' attributes can be set on the &lt;select&gt; tag.
+        The idea is that you can just enclose an existing &lt;select&gt; and it will work the
+        way you expect</p>
+    </div>
+
+
+    <h2>Prettification of Standard Non-Ajax Select Widget</h2>
+
+    <div ng-controller="testController as tc" >
+        <h3>Enclose a standard &lt;select&gt; with the directive.</h3>
+        <p_select ng-model="tc.bob">
+            <select name="bob" placeholder="Find a Bob">
+                <option>Bob Hope</option>
+                <option>Bob Newhart</option>
+                <option>Bob Dobbs</option>
+                <option>Bob the Builder</option>
+                <option>Bob Marley</option>
+                <option>Bob Melvin</option>
+                <option>Bob Dylan</option>
+            </select>
+        </p_select>
+
+        <h4>Code</h4>
+<textarea disabled="disabled"><p_select ng-model="tc.bob">
+    <select name="bob" placeholder="Find a Bob">
+        <option>Bob Hope</option>
+        <option>Bob Newhart</option>
+        <option>Bob Dobbs</option>
+        <option>Bob the Builder</option>
+        <option>Bob Marley</option>
+        <option>Bob Melvin</option>
+        <option>Bob Dylan</option>
+    </select>
+</p_select></textarea>
+
+    </div>
+
+    <div ng-controller="testController as tc" >
+        <h3>Multiple Choice, with Preselected Options.</h3>
+        <div p_select
+             placeholder="Find Bobs"
+             ng-model="tc.bobs"
+        >
+            <select name="bobs" multiple>
+                <option>Bob Hope</option>
+                <option>Bob Newhart</option>
+                <option>Bob Dobbs</option>
+                <option selected="selected">Bob the Builder</option>
+                <option>Bob Marley</option>
+                <option selected="selected">Bob Melvin</option>
+                <option>Bob Dylan</option>
+            </select>
+        </div>
+    </div>
+    <br/><br/><br/><br/><br/><br/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="js/pSearch.js"></script>
+    <script src="js/test.js"></script>
+
+</body>
+</html>

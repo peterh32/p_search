@@ -1,0 +1,38 @@
+body {
+    font-family: "Helvetic Neue", Helvetica, Arial, sans-serif;
+}
+
+h2 {
+    margin-top: 40px;
+}
+
+h3 {
+    margin-top: 32px;
+}
+
+h2,h3,h4 {
+    margin-bottom: 0;
+}
+
+textarea {
+    background-color: #dddddd;
+    border: medium none;
+    font-family: "Courier New",Courier,monospace;
+    font-size: 12px;
+    padding: 8px;
+    resize: none;
+    width: 600px;
+    margin: 12px;
+}
+
+dl {
+    font-size: 12px;
+    max-width: 600px;
+}
+
+dt {
+    background-color: #dddddd;
+    font-family: "Courier New",Courier,monospace;
+    padding: 4px;
+    margin: 12px 2px 2px 2px;
+}
