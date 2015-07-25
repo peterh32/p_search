@@ -65,7 +65,7 @@
     function choiceGetter(http, q) {
         // Factory returns an object with getChoices() method that returns choices when you search
         return {
-            'init': function(url, method, defaultParams, searchKey){
+            'init': function(url, method, defaultParams, searchKey, withCredentials){
                 if (method == 'jsonp') {
                     defaultParams['callback'] = 'JSON_CALLBACK';  // angularjs requirement
                 }
@@ -74,7 +74,7 @@
                     _self.params[_self.qKey] = query;
                     _self.deferred = q.defer(); // set up for query
                     // 'timeout' setting below helps with aborting redundant queries
-                    http[method](url, {'params': _self.params, 'withCredentials': true})
+                    http[method](url, {'params': _self.params, 'withCredentials': withCredentials})
                         .success(function (matches) {
                             _self.deferred.resolve(matches);
                         }).error(function (d, status, h, c, statusText) {
@@ -94,6 +94,7 @@
         var $s = $scope;  // makes code easier to read
         // PROPERTIES
         $s.method = 'get';  // can also be jsonp if attr set
+        $s.withCredentials = false;  // set true if you need to provide credentials for this ajax url
         $s.placeholder = 'Select'; // placeholder text
         $s.pname = '';     // the parameter name for the field (name to use when submitting the form)
         $s.query = '';           // search text entered by the user
@@ -214,7 +215,8 @@
         // Some methods used in initializing
         $s.initChoiceGetter = function(){
             // set up the thing that runs the search and returns results.
-            _choiceGetter = ChoiceGetter.init($s.ajaxUrl, $s.method, $s.extraSearchParams, $s.searchKey);
+            _choiceGetter = ChoiceGetter.init($s.ajaxUrl, $s.method, $s.extraSearchParams, $s.searchKey,
+                $s.withCredentials);
         };
 
         // controller methods that can be called by add-on directives to set scope properties
@@ -227,8 +229,6 @@
             // set one of the extra search params
             $s.extraSearchParams[name] = value;
         };
-
-
 
        // Private methods
         function _mod(n, m) {
@@ -290,7 +290,6 @@
             $s.pickDict = dDict;
             $s.selections = Object.getOwnPropertyNames(dDict);  // converts it to an array
         }
-
     }
 
     function pSelectLinkFunction(scope, element, attrs, controller) {
@@ -308,11 +307,11 @@
         });
         if (missing_required_attr) return;
 
+        // set lots of scope properties
+        $s.ajaxUrl = attrs.ajaxUrl;
         $s.pname = attrs.name || '';
         $s.multiple = typeof attrs.multiple != 'undefined';
-
-        // Override scope properties with values from attributes (from markup)
-        if(attrs.ajaxUrl) $s.ajaxUrl = attrs.ajaxUrl;
+        if(attrs.withCredentials) $s.withCredentials = true;
         if(attrs.searchKey) $s.searchKey = attrs.searchKey;
         if(attrs.displayField) $s.displayField = attrs.displayField;
         if(attrs.valueField) $s.valueField = attrs.valueField;
@@ -322,8 +321,6 @@
         if(attrs.extraSearchParams) {
             angular.extend($s.extraSearchParams, scope.$eval(attrs.extraSearchParams));
         }
-
-
 
         // populate initial values
         if (attrs.initialValues) {
