@@ -14,47 +14,48 @@
     </p>
 
     <p>
-        Demo using tvguide.com's search API; hope they don't mind.</p>
+        Demo uses tvguide.com's search API; hope they don't mind.
+    </p>
 
     <h2>Examples</h2>
 
     <div ng-controller="testController as tc" >
         <h3>1. Basic Multiple-Choice Ajax Search Widget</h3>
         <div p_search
-             multiple
-             name="tvshows"
+             ng-model="tc.showsAndMovies"
              ajax-url="http://mapi.tvguide.com/watchlist/search"
+             name="tvshows"
              search-key="keyword"
              extra-search-params="{'limit':'10', 'v': '1.0'}"
              value-field="id"
              display-field="name"
              placeholder="Find TV Shows or Movies"
-             ng-model="tc.showsAndMovies"
+             multiple
         ></div>
 
         <h4>Code</h4>
 <textarea disabled="disabled"><p_search
-     multiple
-     name="tvshows"
+     ng-model="tc.showsAndMovies"
      ajax-url="http://mapi.tvguide.com/watchlist/search"
+     name="tvshows"
      search-key="keyword"
      extra-search-params="{'limit':'10', 'v': '1.0'}"
      value-field="id"
      display-field="name"
      placeholder="Find TV Shows or Movies"
-     ng-model="tc.showsAndMovies"
+     multiple
 ></p_search></textarea>
 
         <h4>Explanation of Attributes</h4>
         <dl>
-            <dt>multiple</dt>
-            <dd>Makes it a multiple-select widget</dd>
+            <dt>ng-model="tc.showsAndMovies"</dt>
+            <dd>The model corresponding to the field. REQUIRED.</dd>
+
+            <dt>ajax-url="http://mapi.tvguide.com/watchlist/search"</dt>
+            <dd>URL for the search API. REQUIRED.</dd>
 
             <dt>name="tvshows"</dt>
             <dd>Form field name (required if you are going to submit in an HTML form)</dd>
-
-            <dt>ajax-url="http://mapi.tvguide.com/watchlist/search"</dt>
-            <dd>URL for the search API</dd>
 
             <dt>search-key="keyword"</dt>
             <dd>
@@ -79,8 +80,9 @@
             <dt>placeholder="Find TV Shows or Movies"</dt>
             <dd>Placeholder text (optional, defaults to "Select")</dd>
 
-            <dt>ng-model="tc.showsAndMovies"</dt>
-            <dd>The model corresponding to the field. Required</dd>
+            <dt>multiple</dt>
+            <dd>Makes it a multiple-select widget</dd>
+
         </dl>
     </div>
 
@@ -131,32 +133,55 @@
 
 
     <h2>Also...</h2>
-        <p>More options:</p>
-        <dl>
-            <dt>on-change="scope.foo(picks)"</dt>
-            <dd>On-change callback; always passed the array of current selections (picks)</dd>
+    <p>More options:</p>
+    <dl>
+        <dt>with-credentials="true"</dt>
+        <dd>Set if credentials are required for the ajax source, e.g. if you are getting 403s.</dd>
 
-            <dt>jsonp="true"</dt>
-            <dd>
-                If the results will be returned as a jsonp object. Object must follow angularjs customary jsonp structure:
-                <pre>JSON_CALLBACK([{name: 'John Smith', id: 32232}, {name: 'Mary Jones', id: 54677}, ...])</pre>
-            </dd>
+        <dt>on-change="scope.foo(picks)"</dt>
+        <dd>On-change callback; always passed the array of current selections ("picks")</dd>
 
-            <dt>initial="[{name: 'John Smith', id: 32232}, {name: 'Mary Jones', id: 54677}"</dt>
-            <dd>Provide initial selections in the markup.</dd>
+        <dt>jsonp="true"</dt>
+        <dd>
+            If the results will be returned as a jsonp object. Object must follow angularjs customary jsonp structure:
+            <pre>JSON_CALLBACK([{name: 'John Smith', id: 32232}, {name: 'Mary Jones', id: 54677}, ...])</pre>
+        </dd>
 
-            <dt>results-in="resultsobj"</dt>
-            <dd>
-                By default, the widget expects results to be returned in a single-level array.
-                If they results are in another object, then use the results-in parameter.
-                <br/><br/>
-                For example if ajax response is an object like this:
-                <pre>{success: true, {my_results: {matches: [...results array...], count:30}},</pre>
-                you'd set
-                <pre>results-in="my_results.matches"</pre>
-            </dd>
-        </dl>
-    <br/><br/><br/><br/>
+        <dt>initial="[{name: 'John Smith', id: 32232}, {name: 'Mary Jones', id: 54677}"</dt>
+        <dd>Provide initial selections in the markup.</dd>
+
+        <dt>results-in="resultsobj"</dt>
+        <dd>
+            By default, the widget expects results to be returned in a single-level array.
+            If they results are in another object, then use the results-in parameter.
+            <br/><br/>
+            For example if ajax response is an object like this:
+            <pre>{success: true, {my_results: {matches: [...results array...], count:30}},</pre>
+            you'd set
+            <pre>results-in="my_results.matches"</pre>
+        </dd>
+    </dl>
+
+
+    <h2>Usage</h2>
+    <h3>CSS</h3>
+    <p>
+        Load <a href="css/pSearch.css">pSearch.css</a>.
+        Optionally load <a href="css/spinny.css">spinny.css</a> (or swap your own favorite busy indicator
+        into the template).
+    </p>
+
+    <h3>JS</h3>
+    <p>Load <a href="js/pSearch.js">pSearch.js</a>.</p>
+    <p>Load the pSearch module into your app, e.g.:</p>
+<textarea disabled="disabled">(function() {
+angular.module('testApp', ['pSearch'])
+    .controller('testController', function($scope){});
+})();</textarea>
+
+
+    <h3>HTML</h3>
+    <p>Follow the markup examples above</p>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>

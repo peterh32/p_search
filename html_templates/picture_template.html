@@ -21,7 +21,7 @@
         <li style="clear:both" ng-repeat="choice in choices" ng-class="{selected: selected==$index}"
             ng-mouseover="scrollTo($index)" ng-click="pickMe()">
             <img height="50" style="float: left; padding-right: 8px;" src="{{ (choice.photos[0].url) || 'img/no_img.png' }}"/>
-            <div style="overflow: hidden; height:50px;" >{{ choice[displayField] }}</div>
+            <div style="overflow: hidden; height:50px;" >{{ choice[displayField] }}<br/>({{ choice['type'] }})</div>
         </li>
     </ul>
 

@@ -42,13 +42,13 @@
 (function(currentScriptPath){
     angular.module('pSearch', [])
         .factory('ChoiceGetter', ['$http', '$q', choiceGetter])
-        .directive('pSearch', pSelectDirective);
+        .directive('pSearch', pSearchDirective);
 
-    function pSelectDirective() {
+    function pSearchDirective() {
         return {
             'scope': {
                 'initialValues': '&',
-                'onChange': '&', 
+                'onChange': '&',
                 'selections': '=ngModel'  // expose 'selections' as ng-model
             },
             'templateUrl': function(element, attrs) {
@@ -82,7 +82,7 @@
                         }).error(function (d, status, h, c, statusText) {
                             _self.deferred.reject();
                             if (status) {
-                                console.error('Problem retrieving profile - ' + status + ' error')
+                                console.error('Problem retrieving item - ' + status + ' error')
                             }
                         });
                     return _self.deferred.promise;
@@ -176,7 +176,7 @@
         $s.handleBlur = function(){
             setTimeout(_hideResults, 250);  // race condition with $s.pickMe (ng-click on list items)
         };
-        
+
         $s.scrollTo = function(index) {
             // scroll to a specific search result
             $s.selected = index;
