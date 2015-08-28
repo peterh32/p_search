@@ -8,16 +8,14 @@
 <body ng-app="testApp">
 
     <h1>pSelect</h1>
+    <a href="https://github.com/peterh32/p_search">On GitHub &raquo;</a>
 
     <p>
         Type-ahead search widget built using angular.js.
     </p>
 
-    <p>
-        Demo uses tvguide.com's search API; hope they don't mind.
-    </p>
 
-    <h2>Examples</h2>
+    <h2>Examples <small>(using tvguide.com's search API; hope they don't mind)</small></h2>
 
     <div ng-controller="testController as tc" >
         <h3>1. Basic Multiple-Choice Ajax Search Widget</h3>
@@ -121,7 +119,6 @@
              ng-model="tc.showsAndMovies"
              template-url="html_templates/picture_template.html"
         ></div>
-        <h4>Additional Attributes</h4>
         <dl>
             <dt>template-url="html_templates/picture_template.html"</dt>
             <dd>
