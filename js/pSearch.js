@@ -71,8 +71,6 @@
                 }
                 var _self = {'qKey': searchKey, 'params': defaultParams};
                 _self.getChoices =  function (query) {
-                                console.log(query)
-
                     _self.params[_self.qKey] = query;
                     _self.deferred = q.defer();
                     http[method](url, {

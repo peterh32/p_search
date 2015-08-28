@@ -94,7 +94,7 @@
 ._p_select .spinny {
     position: absolute;
     right: 4px;
-    top: 5px;
+    top: 2px;
     display: none;
 }
 ._p_select.busy .spinny {

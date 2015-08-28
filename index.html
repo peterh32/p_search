@@ -16,9 +16,10 @@
     <p>
         Demo using tvguide.com's search API; hope they don't mind.</p>
 
+    <h2>Examples</h2>
 
     <div ng-controller="testController as tc" >
-        <h3>Basic Multiple-Choice Ajax Search Widget</h3>
+        <h3>1. Basic Multiple-Choice Ajax Search Widget</h3>
         <div p_search
              multiple
              name="tvshows"
@@ -85,12 +86,11 @@
         </dl>
     </div>
 
-    
+
 
     <div ng-controller="testController as tc" >
-        <h3>Alternate Template</h3>
+        <h3>2. Using  an Alternate Template</h3>
         <p>
-            This is probably the most useful thing about the widget.
             You can completely customize the dropdown and results by
             editing the HTML template.
         <p>
@@ -118,7 +118,7 @@
     </div>
 
     <div ng-controller="testController as tc" >
-        <h3>Single-Selection Version</h3>
+        <h3>3. Single-Selection Version</h3>
         <p>Same as the first one, but leave off the <em>multiple</em> attribute<p>
         <div p_search
              name="tvshow"
@@ -131,6 +131,29 @@
              ng-model="tc.showsAndMovies"
         ></div>
     </div>
+
+    <h2>Also...</h2>
+        <dl>
+            <dt>jsonp="true"</dt>
+            <dd>
+                If the results will be returned as a jsonp object. Object must follow angularjs customary jsonp structure:
+                <pre>JSON_CALLBACK([{name: 'John Smith', id: 32232}, {name: 'Mary Jones', id: 54677}, ...])</pre>
+            </dd>
+
+            <dt>initial="[{name: 'John Smith', id: 32232}, {name: 'Mary Jones', id: 54677}"</dt>
+            <dd>Provide initial selections in the markup.</dd>
+
+            <dt>results-in="resultsobj"</dt>
+            <dd>
+                By default, the widget expects results to be returned in a single-level array.
+                If they results are in another object, then use the results-in parameter.
+                <br/><br/>
+                For example if ajax response is an object like this:
+                <pre>{success: true, {my_results: {matches: [...results array...], count:30}},</pre>
+                you'd set
+                <pre>results-in="my_results.matches"</pre>
+            </dd>
+        </dl>
     <br/><br/><br/><br/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
