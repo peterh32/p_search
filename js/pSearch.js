@@ -1,15 +1,15 @@
 /*
     pSearch - Ajax typeahead search
 
-    Requires jquery and angularjs and pSelect.css.
+    Requires jquery and angularjs and pSearch.css.
 
     Expects template p_select.html to be in ../html_templates directory.
 
     Example:
         <p_search ng-model="foo" ajax-url="/search/profile"></p_search>
 
-    Options:
-    These all go into the markup as attributes. Optional unless indicated otherwise
+    Options/attributes:
+    Optional unless indicated otherwise
         ng-model (required)
         placeholder="Find people..."   <-- Placeholder text
         template-url="/media/special_template.html"     <-- to use a different template for the widget
@@ -40,15 +40,15 @@
 
  */
 (function(currentScriptPath){
-    angular.module('pSelect', [])
+    angular.module('pSearch', [])
         .factory('ChoiceGetter', ['$http', '$q', choiceGetter])
-        .directive('pSelect', pSelectDirective);
+        .directive('pSearch', pSelectDirective);
 
     function pSelectDirective() {
         return {
             'scope': {
                 'initialValues': '&',
-                'onChange': '&', // the on-change callback
+                'onChange': '&', 
                 'selections': '=ngModel'  // expose 'selections' as ng-model
             },
             'templateUrl': function(element, attrs) {
@@ -57,7 +57,7 @@
                 return attrs.templateUrl || defaultTemplate;
             },
             'controller': pSelectController,
-            'priority': 100, // higher priority assures that this link function evaluates after any add-on directives
+            'priority': 500, // higher priority assures that this link function evaluates after any add-on directives
             'link': pSelectLinkFunction
         }
     }
@@ -71,10 +71,14 @@
                 }
                 var _self = {'qKey': searchKey, 'params': defaultParams};
                 _self.getChoices =  function (query) {
+                                console.log(query)
+
                     _self.params[_self.qKey] = query;
-                    _self.deferred = q.defer(); // set up for query
-                    // 'timeout' setting below helps with aborting redundant queries
-                    http[method](url, {'params': _self.params, 'withCredentials': withCredentials})
+                    _self.deferred = q.defer();
+                    http[method](url, {
+                        'params': _self.params,
+                        'withCredentials': withCredentials
+                    })
                         .success(function (matches) {
                             _self.deferred.resolve(matches);
                         }).error(function (d, status, h, c, statusText) {
@@ -119,7 +123,8 @@
 
         // private
         var _choiceGetter;  // the object that handles queries and returns choices; will be initialized below
-
+        var _currentSearch;  //placeholder for timer containing current running search
+        var _DELAY = 250; // ms delay between searches (prevent overlapping searches)
 
         // METHODS
         // Scope methods (called from the markup or the directive)
@@ -271,9 +276,12 @@
         }
 
         function _search() {
-            // run the search
+            // run the search - uses timeout to avoid overlapping searches (angularjs ajax cancel is problematic)
             $s.busy = true;
-            _choiceGetter.getChoices($s.query).then(_handleResponse);
+            clearTimeout(_currentSearch);
+            _currentSearch = setTimeout(function() {
+                _choiceGetter.getChoices($s.query).then(_handleResponse);
+            }, _DELAY)
         }
 
         function _unHighlightPicks() {
@@ -301,7 +309,7 @@
         $.each(Object.keys(REQUIRED), function(i, attr){
             if (!attrs[attr]) {
                 $s.placeholder='ERROR';
-                console.error('The pSelect widget requires ' +REQUIRED[attr]+ ' attribute');
+                console.error('The pSearch widget requires ' +REQUIRED[attr]+ ' attribute');
                 missing_required_attr = true;
             }
         });

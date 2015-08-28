@@ -1,6 +1,6 @@
 // test module
 (function() {
-    angular.module('testApp', ['pSelect'])
+    angular.module('testApp', ['pSearch'])
         .controller('testController', function($scope){});
 })();
 
