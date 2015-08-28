@@ -95,7 +95,8 @@
             editing the HTML template.
         <p>
         <p>
-            This version displays images (when available) with each choice.
+            This version displays images (when available) with each choice,
+            lists the type with each selection, and puts the close 'X' on the left.
         </p>
         <div p_search
              multiple
@@ -134,6 +135,9 @@
 
     <h2>Also...</h2>
         <dl>
+            <dt>on-change="scope.foo(picks)"</dt>
+            <dd>On-change callback; always passed the array of current selections (picks)</dd>
+
             <dt>jsonp="true"</dt>
             <dd>
                 If the results will be returned as a jsonp object. Object must follow angularjs customary jsonp structure:

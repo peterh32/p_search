@@ -4,10 +4,9 @@
 
         <!-- the selected picks, if any -->
         <span class="pick" ng-repeat="pick in picks" ng-class="{highlight: highlight==$index}">
+            <a ng-click="unPick($index)" class="kill_pick">&cross;</a>
             {{ pick[displayField] }}
-            <span ng-show="pick.photos[0].url"> (has photo)</span>
-            <span ng-show="!pick.photos[0].url"> (no photo)</span>
-            <a ng-click="unPick($index)" class="kill_pick">&times;</a>
+            ({{ pick['type'] }})
         </span>
 
         <!-- the selector input -->
